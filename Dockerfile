@@ -1,5 +1,4 @@
-# Install az CLI using PIP
-FROM debian:${DEBIAN_VERSION} as azure-cli
+FROM debian:bookworm-20230725-slim
 ARG AZURE_CLI_VERSION
 ARG TERRAFORM_VERSION
 RUN apt-get update && \
