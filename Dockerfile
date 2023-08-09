@@ -9,10 +9,10 @@ FROM debian:${DEBIAN_VERSION} as terraform-cli
 ARG TERRAFORM_VERSION
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
-    curl=7.88.1-10+deb12u1 \
-    ca-certificates=20230311 \
-    unzip=6.0-28 \
-    gnupg=2.2.40-1.1 && \
+    curl=7.74.0-1.3+deb11u7 \
+    ca-certificates=20210119 \
+    unzip=6.0-26+deb11u1 \
+    gnupg=2.2.27-2+deb11u2 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 WORKDIR /workspace
@@ -31,8 +31,9 @@ FROM debian:${DEBIAN_VERSION} as azure-cli
 ARG AZURE_CLI_VERSION
 ARG PYTHON_MAJOR_VERSION
 RUN apt-get update && \
-  apt-get install -y --no-install-recommends python3=${PYTHON_MAJOR_VERSION}.2-3 && \
-  apt-get install -y --no-install-recommends python3-pip=23.0.1+dfsg-1 && \
+  apt-get install -y --no-install-recommends \
+  python3=${PYTHON_MAJOR_VERSION}.2-3 \
+  python3-pip=20.3.4-4+deb11u1 && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
   pip3 install --no-cache-dir setuptools==68.0.0 && \
@@ -44,8 +45,8 @@ LABEL maintainer="bgauduch@github"
 ARG PYTHON_MAJOR_VERSION
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    ca-certificates=20230311 \
-    git=1:2.39.2-1.1 \
+    ca-certificates=20210119 \
+    git=1:2.30.2-1+deb11u2 \
     python3=${PYTHON_MAJOR_VERSION}.2-3 \
     python3-distutils=${PYTHON_MAJOR_VERSION}.2-1 && \
     apt-get clean && \
