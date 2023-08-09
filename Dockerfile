@@ -36,7 +36,7 @@ RUN apt-get update && \
   python3-pip=20.3.4-4+deb11u1 && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
-  pip3 install --no-cache-dir setuptools==60.8.2 && \
+  pip3 install --no-cache-dir setuptools==58 && \
   pip3 install --no-cache-dir azure-cli==${AZURE_CLI_VERSION}
 
 # Build final image
