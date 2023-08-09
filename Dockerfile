@@ -8,7 +8,7 @@ ARG DEBIAN_VERSION=bullseye-20220125-slim
 FROM debian:${DEBIAN_VERSION} as terraform-cli
 ARG TERRAFORM_VERSION
 RUN apt-get update
-RUN apt-get install --no-install-recommends -y curl=7.74.0-1.3+deb11u1
+RUN apt-get install --no-install-recommends -y curl=7.74.0-1.3+deb11u7
 RUN apt-get install --no-install-recommends -y ca-certificates=20210119
 RUN apt-get install --no-install-recommends -y unzip=6.0-26
 RUN apt-get install --no-install-recommends -y gnupg=2.2.27-2
