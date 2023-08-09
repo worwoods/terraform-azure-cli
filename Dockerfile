@@ -14,18 +14,18 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-RUN gosu mkdir -p /etc/apt/keyrings && \
-    wget  -q -O- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | gosu tee /etc/apt/keyrings/microsoft.gpg > /dev/null && \
-    gosu chmod go+r /etc/apt/keyrings/microsoft.gpg && \
+RUN mkdir -p /etc/apt/keyrings && \
+    wget  -q -O- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | tee /etc/apt/keyrings/microsoft.gpg > /dev/null && \
+    chmod go+r /etc/apt/keyrings/microsoft.gpg && \
     AZ_REPO=$(lsb_release -cs) && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | \
-    gosu tee /etc/apt/sources.list.d/azure-cli.list
+    tee /etc/apt/sources.list.d/azure-cli.list
 
-RUN wget -q  -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | GOSU tee /etc/apt/keyrings/hashicorp-archive-keyring.gpg > /dev/null && \
-    gosu chmod go+r /etc/apt/keyrings/hashicorp-archive-keyring.gpg && \
+RUN wget -q  -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | tee /etc/apt/keyrings/hashicorp-archive-keyring.gpg > /dev/null && \
+    chmod go+r /etc/apt/keyrings/hashicorp-archive-keyring.gpg && \
     echo "deb [signed-by=//etc/apt/keyrings/hashicorp-archive-keyring.gpg] \
     https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
-    gosu tee /etc/apt/sources.list.d/hashicorp.list
+    tee /etc/apt/sources.list.d/hashicorp.list
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y azure-cli="${AZURE_CLI_VERSION}" terraform="${TERRAFORM_VERSION}" && \
