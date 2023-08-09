@@ -28,7 +28,7 @@ RUN curl -sLS https://apt.releases.hashicorp.com/gpg | gpg --dearmor | tee /etc/
     tee /etc/apt/sources.list.d/hashicorp.list
 
 RUN apt-get update && \
-    apt-get install --no-install-recommends -y azure-cli="${AZURE_CLI_VERSION}" terraform="${TERRAFORM_VERSION}" && \
+    apt-get install --no-install-recommends -y azure-cli="${AZURE_CLI_VERSION}-1~bookworm" terraform="${TERRAFORM_VERSION}" && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
