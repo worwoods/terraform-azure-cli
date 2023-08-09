@@ -1,17 +1,27 @@
 # Build arguments
 ARG AZURE_CLI_VERSION
 ARG TERRAFORM_VERSION
-ARG PYTHON_MAJOR_VERSION=3.9
-ARG DEBIAN_VERSION=bullseye-20220125-slim
+ARG PYTHON_MAJOR_VERSION=3.11
+ARG DEBIAN_VERSION=bookworm-20230725-slim
+ARG CURL=7.88.1-10+deb12u1
+ARG CA-CERTIFICATES=20230311
+ARG GIT=1:2.30.2-1+deb11u2
+ARG GNUPG=2.2.40-1.1
+ARG PYTHON3=${PYTHON_MAJOR_VERSION}.2-1+b1
+ARG PYTHON3-PIP=23.0.1+dfsg-1
+ARG PYTHON3-DISTUTILS=${PYTHON_MAJOR_VERSION}.2-3
+ARG PYPI_PIP_VERSION=23.2.1
+ARG SETUPTOOLS=68.0.0
+ARG UNZIP=6.0-28
 
 # Download Terraform binary
 FROM debian:${DEBIAN_VERSION} as terraform-cli
 ARG TERRAFORM_VERSION
 RUN apt-get update
-RUN apt-get install --no-install-recommends -y curl=7.74.0-1.3+deb11u7
-RUN apt-get install --no-install-recommends -y ca-certificates=20210119
-RUN apt-get install --no-install-recommends -y unzip=6.0-26+deb11u1
-RUN apt-get install --no-install-recommends -y gnupg=2.2.27-2+deb11u2
+RUN apt-get install --no-install-recommends -y CURL=${CURL}
+RUN apt-get install --no-install-recommends -y ca-certificates=${CA-CERTIFICATES}
+RUN apt-get install --no-install-recommends -y unzip=${UNZIP}
+RUN apt-get install --no-install-recommends -y gnupg=${GNUPG}
 WORKDIR /workspace
 RUN curl -Os https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_SHA256SUMS
 RUN curl -Os https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
@@ -28,9 +38,10 @@ FROM debian:${DEBIAN_VERSION} as azure-cli
 ARG AZURE_CLI_VERSION
 ARG PYTHON_MAJOR_VERSION
 RUN apt-get update
-RUN apt-get install -y --no-install-recommends python3=${PYTHON_MAJOR_VERSION}.2-3
-RUN apt-get install -y --no-install-recommends python3-pip=20.3.4-4+deb11u1
-RUN pip3 install --no-cache-dir setuptools==60.8.2
+RUN apt-get install -y --no-install-recommends python3=${PYTHON3}
+RUN apt-get install -y --no-install-recommends python3-pip=${PYTHON3-PIP}
+RUN python -m pip install --upgrade pip==${PYPI_PIP_VERSION}
+RUN pip3 install --no-cache-dir setuptools==${SETUPTOOLS}
 RUN pip3 install --no-cache-dir azure-cli==${AZURE_CLI_VERSION}
 
 # Build final image
@@ -39,10 +50,10 @@ LABEL maintainer="bgauduch@github"
 ARG PYTHON_MAJOR_VERSION
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
-    ca-certificates=20210119 \
-    git=1:2.30.2-1+deb11u2 \
-    python3=${PYTHON_MAJOR_VERSION}.2-3 \
-    python3-distutils=${PYTHON_MAJOR_VERSION}.2-1 \
+    ca-certificates=${CA-CERTIFICATES} \
+    git=${GIT} \
+    python3=${PYTHON3} \
+    python3-distutils=${PYTHON3-DISTUTILS} \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
   && update-alternatives --install /usr/bin/python python /usr/bin/python${PYTHON_MAJOR_VERSION} 1
