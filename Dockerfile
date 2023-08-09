@@ -3,12 +3,15 @@ ARG AZURE_CLI_VERSION
 ARG TERRAFORM_VERSION
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+    gosu=1.14-1+b6 \
     ca-certificates=20230311 \
     curl=7.88.1-10+deb12u1 \
     gnupg=2.2.40-1.1 \
     apt-transport-https=2.6.1 \
     lsb-release=12.0-1 \
-    software-properties-common=0.99.30-4
+    software-properties-common=0.99.30-4 && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN gosu mkdir -p /etc/apt/keyrings && \
