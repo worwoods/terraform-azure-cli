@@ -18,7 +18,7 @@ ARG UNZIP=6.0-28
 FROM debian:${DEBIAN_VERSION} as terraform-cli
 ARG TERRAFORM_VERSION
 RUN apt-get update
-RUN apt-get install --no-install-recommends -y CURL=${CURL}
+RUN apt-get install --no-install-recommends -y CURL="${CURL}"
 RUN apt-get install --no-install-recommends -y ca-certificates=${CA-CERTIFICATES}
 RUN apt-get install --no-install-recommends -y unzip=${UNZIP}
 RUN apt-get install --no-install-recommends -y gnupg=${GNUPG}
