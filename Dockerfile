@@ -29,7 +29,7 @@ ARG AZURE_CLI_VERSION
 ARG PYTHON_MAJOR_VERSION
 RUN apt-get update
 RUN apt-get install -y --no-install-recommends python3=${PYTHON_MAJOR_VERSION}.2-3
-RUN apt-get install -y --no-install-recommends python3-pip=20.3.4-4
+RUN apt-get install -y --no-install-recommends python3-pip=20.3.4-4+deb11u1
 RUN pip3 install --no-cache-dir setuptools==60.8.2
 RUN pip3 install --no-cache-dir azure-cli==${AZURE_CLI_VERSION}
 
