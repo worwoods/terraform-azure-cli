@@ -15,13 +15,13 @@ RUN apt-get update && \
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN mkdir -p /etc/apt/keyrings && \
-    wget  -q -O- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | tee /etc/apt/keyrings/microsoft.gpg > /dev/null && \
+    curl -sLS https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | tee /etc/apt/keyrings/microsoft.gpg > /dev/null && \
     chmod go+r /etc/apt/keyrings/microsoft.gpg && \
     AZ_REPO=$(lsb_release -cs) && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | \
     tee /etc/apt/sources.list.d/azure-cli.list
 
-RUN wget -q  -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | tee /etc/apt/keyrings/hashicorp-archive-keyring.gpg > /dev/null && \
+RUN curl -sLS https://apt.releases.hashicorp.com/gpg | gpg --dearmor | tee /etc/apt/keyrings/hashicorp-archive-keyring.gpg > /dev/null && \
     chmod go+r /etc/apt/keyrings/hashicorp-archive-keyring.gpg && \
     echo "deb [signed-by=//etc/apt/keyrings/hashicorp-archive-keyring.gpg] \
     https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
