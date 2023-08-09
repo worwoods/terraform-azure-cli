@@ -11,7 +11,7 @@ RUN apt-get update
 RUN apt-get install --no-install-recommends -y curl=7.74.0-1.3+deb11u7
 RUN apt-get install --no-install-recommends -y ca-certificates=20210119
 RUN apt-get install --no-install-recommends -y unzip=6.0-26+deb11u1
-RUN apt-get install --no-install-recommends -y gnupg=2.2.27-2
+RUN apt-get install --no-install-recommends -y gnupg=2.2.27-2+deb11u2
 WORKDIR /workspace
 RUN curl -Os https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_SHA256SUMS
 RUN curl -Os https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
