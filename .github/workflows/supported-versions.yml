@@ -6,6 +6,11 @@ on:
       get_versions:
         description: "Matrix of supported versions"
         value: ${{ jobs.get.outputs.versions }}
+      get_latest:
+        description: "Latest supported product versions"
+        value: |
+          az_version: ${ AZ_VERSION }
+          tf_version: echo ${ TF_VERSION }
 
 jobs:
   get:
@@ -17,19 +22,38 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
 
-      - name: Save supported versions as output
-        id: set-matrix
+#       - name: Save supported versions as output
+#         id: set-matrix
+#         run: |
+#           ls -latrh
+#           cat ./supported_versions.json
+#           SUPPORTED_VERSIONS=$(cat ./supported_versions.json)
+#           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//'%'/%25}"
+#           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\n'/%0A}"
+#           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\r'/%0D}"
+#           echo "{matrix}=${SUPPORTED_VERSIONS}" >> $GITHUB_OUTPUT
+#           printf '%s\n' "$matrix" 
+      - name: Retrieve supported versions
+        id: get-versions
         run: |
-          ls -latrh
-          cat ./supported_versions.json
-          SUPPORTED_VERSIONS=$(cat ./supported_versions.json)
-          SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//'%'/%25}"
-          SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\n'/%0A}"
-          SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\r'/%0D}"
-          echo "{matrix}=${SUPPORTED_VERSIONS}" >> $GITHUB_OUTPUT
-          printf '%s\n' "$matrix" 
+          echo "AZ_VERSIONS=$(jq -r '.azcli_version | sort | .[-1]' supported_versions.json)" >> $GITHUB_ENV
+          echo "TF_VERSIONS=$(jq -r '.tf_version | sort | .[-1]' supported_versions.json)" >> $GITHUB_ENV
+          
+      - name: Retrieve latest suported versions
+        id: get-latest
+        run: |
+          echo "AZ_VERSION=$(jq -r '.azcli_version | sort | .[-1]' supported_versions.json)" >> $GITHUB_ENV
+          echo "TF_VERSION=$(jq -r '.tf_version | sort | .[-1]' supported_versions.json)" >> $GITHUB_ENV
 
-      - name: Display Versions
-        id: show
+      - name: Display latest versions
+        id: latest-versions
         run: |
-          echo ${{ matrix }}
+          echo ${ AZ_VERSION }
+          echo ${ TF_VERSION }
+      
+      - name: Display all versions
+        id: show-versions
+        run: |
+          echo ${ AZ_VERSIONS }
+          echo ${ TF_VERSIONS }
+          
