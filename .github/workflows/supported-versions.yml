@@ -21,11 +21,13 @@ jobs:
         id: set-matrix
         run: |
           ls -latrh
+          cat ./supported_versions.json
           SUPPORTED_VERSIONS=$(cat ./supported_versions.json)
           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//'%'/%25}"
           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\n'/%0A}"
           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\r'/%0D}"
           echo "{matrix}=${SUPPORTED_VERSIONS}" >> $GITHUB_OUTPUT
+          echo ${MATRIX}
 
       - name: Display Versions
         id: show
