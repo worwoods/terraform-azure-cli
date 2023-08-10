@@ -1,0 +1,21 @@
+name: test-harness
+
+on:
+  push:
+
+jobs:
+  load_versions:
+    uses: ./.github/workflows/supported-versions.yml
+
+  build:
+    runs-on: ubuntu-20.04
+    needs: load_versions
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - name: Save branch name as env var
+        run: |
+          echo ${{ needs.load_versions.outputs.get_versions }}
+          echo ${{ job.load_versions.outputs.get_versions }}
