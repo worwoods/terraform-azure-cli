@@ -10,7 +10,7 @@ on:
         description: "Latest supported product versions"
         value: |
           az_version: ${ AZ_VERSION }
-          tf_version: echo ${ TF_VERSION }
+          tf_version: ${ TF_VERSION }
 
 jobs:
   get:
@@ -36,8 +36,8 @@ jobs:
       - name: Retrieve supported versions
         id: get-versions
         run: |
-          echo "AZ_VERSIONS=$(jq -r '.azcli_version | sort | .[-1]' supported_versions.json)" >> $GITHUB_ENV
-          echo "TF_VERSIONS=$(jq -r '.tf_version | sort | .[-1]' supported_versions.json)" >> $GITHUB_ENV
+          echo "AZ_VERSIONS=$(jq -r '.azcli_version | sort' supported_versions.json)" >> $GITHUB_ENV
+          echo "TF_VERSIONS=$(jq -r '.tf_version | sort' supported_versions.json)" >> $GITHUB_ENV
           
       - name: Retrieve latest suported versions
         id: get-latest
