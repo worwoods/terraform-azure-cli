@@ -56,7 +56,7 @@ jobs:
         run: |
           echo "az_versions=$(jq -r -c '.azcli_version | sort | reverse' supported_versions.json)" >> $GITHUB_ENV
           echo "tf_versions=$(jq -r -c '.tf_version | sort | reverse' supported_versions.json)" >> $GITHUB_ENV
-          echo -e matrix=\{"tf_versions": $(jq -r -c '.azcli_version | sort | reverse' supported_versions.json), "az_versions": $(jq -r -c '.tf_version | sort | reverse' supported_versions.json)\}
+          echo -e matrix=\{"tf_versions": $(jq -r -c '.azcli_version | sort | reverse' supported_versions.json), "az_versions": $(jq -r -c '.tf_version | sort | reverse' supported_versions.json)\} >> $GITHUB_ENV
           
       - name: output
         run: |
