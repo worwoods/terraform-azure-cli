@@ -33,11 +33,6 @@ jobs:
 #           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\r'/%0D}"
 #           echo "{matrix}=${SUPPORTED_VERSIONS}" >> $GITHUB_OUTPUT
 #           printf '%s\n' "$matrix" 
-      - name: Retrieve supported versions
-        id: get-versions
-        run: |
-          echo "AZ_VERSIONS=$(jq -r '.azcli_version | sort' supported_versions.json)" >> $GITHUB_ENV
-          echo "TF_VERSIONS=$(jq -r '.tf_version | sort' supported_versions.json)" >> $GITHUB_ENV
           
       - name: Retrieve latest suported versions
         id: get-latest
@@ -45,6 +40,12 @@ jobs:
           echo "AZ_VERSION=$(jq -r '.azcli_version | sort | .[-1]' supported_versions.json)" >> $GITHUB_ENV
           echo "TF_VERSION=$(jq -r '.tf_version | sort | .[-1]' supported_versions.json)" >> $GITHUB_ENV
 
+      - name: Retrieve supported versions
+        id: get-versions
+        run: |
+          echo "AZ_VERSIONS=$(jq -r '.azcli_version | sort' supported_versions.json)" >> $GITHUB_ENV
+          echo "TF_VERSIONS=$(jq -r '.tf_version | sort' supported_versions.json)" >> $GITHUB_ENV
+          
       - name: Display latest versions
         id: latest-versions
         run: |
