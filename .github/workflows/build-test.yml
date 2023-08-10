@@ -43,8 +43,8 @@ jobs:
   load_versions:
     runs-on: ubuntu-20.04
     outputs:
-      az_versions: ${{ steps.set-matrix.outputs.az_versions }}
-      tf_versions: ${{ steps.set-matrix.outputs.tf_versions }}
+      az_versions: ${{ env.az_versions }}
+      tf_versions: ${{ env.tf_versions }}
       
     steps:
       - name: Check out the repo
