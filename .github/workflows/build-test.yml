@@ -51,7 +51,7 @@ jobs:
       - name: Save supported versions as output
         id: set-matrix
         run: |
-          SUPPORTED_VERSIONS=$(jq -r '.azcli_version | sort' supported_versions.json)"
+          SUPPORTED_VERSIONS=$(jq -r -c '.azcli_version | sort | reverse' supported_versions.json)"
           echo $SUPPORTED_VERSIONS
           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//'%'/%25}"
           echo $SUPPORTED_VERSIONS
@@ -72,7 +72,7 @@ jobs:
       - name: Save supported versions as output
         id: set-matrix
         run: |
-          SUPPORTED_VERSIONS=$(jq -r '.tf_version | sort' supported_versions.json)"
+          SUPPORTED_VERSIONS=$(jq -r -c '.tf_version | sort | reverse' supported_versions.json)"
           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//'%'/%25}"
           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\n'/%0A}"
           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\r'/%0D}"
