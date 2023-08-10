@@ -27,10 +27,9 @@ jobs:
           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\n'/%0A}"
           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\r'/%0D}"
           echo "{matrix}=${SUPPORTED_VERSIONS}" >> $GITHUB_OUTPUT
-          echo ${MATRIX}
+          printf '%s\n' "$matrix" 
 
       - name: Display Versions
         id: show
         run: |
-          echo ${{ steps.set-matrix.outputs.matrix }}
-          echo ${{ env.matrix }}
+          echo ${{ matrix }}
