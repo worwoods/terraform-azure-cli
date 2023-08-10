@@ -2,11 +2,11 @@ name: Load Supported Versions
 
 on:
   workflow_dispatch:
-  workflow_call:
-    outputs:
-      get_versions:
-        description: "Matrix of supported versions"
-        value: ${{ jobs.load_supported_versions.outputs.versions }}
+#   workflow_call:
+#     outputs:
+#       get_versions:
+#         description: "Matrix of supported versions"
+#         value: ${{ jobs.load_supported_versions.outputs.versions }}
 
 jobs:
   load_supported_versions:
