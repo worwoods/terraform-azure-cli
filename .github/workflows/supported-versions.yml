@@ -10,7 +10,6 @@ on:
 jobs:
   get:
     runs-on: ubuntu-20.04
-
     outputs:
       versions: ${{ steps.set-matrix.outputs.matrix }}
 
@@ -21,6 +20,7 @@ jobs:
       - name: Save supported versions as output
         id: set-matrix
         run: |
+          ls -latrh
           SUPPORTED_VERSIONS=$(cat ./supported_versions.json)
           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//'%'/%25}"
           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\n'/%0A}"
