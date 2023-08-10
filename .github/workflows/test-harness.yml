@@ -1,19 +1,27 @@
-name: test-harness
+name: Main Workflow
+
 on:
   push:
+    branches:
+      - main
 
 jobs:
-  load_supported_versions:
-    uses: ./.github/workflows/supported-versions.yml
-  test-harness:
-    runs-on: ubuntu-20.04
-    needs: load_supported_versions
-    strategy:
-      matrix: ${{ fromJSON(needs.load_supported_versions.outputs.matrix) }}
-      
+  mainjob1:
+    runs-on: ubuntu-latest
+    outputs:
+      var1: ${{ steps.set_var.outputs.var1 }}
     steps:
-      - name: Check out the repo
-        uses: actions/checkout@v3
+      - name: Set Variable
+        id: set_var
+        run: |
+          echo "var1=good" >> $GITHUB_OUTPUT
 
-      - name: Display matrix
-        run: echo "IMAGE_TAG=${BRANCH}_terraform-${{ matrix.tf_version }}_azcli-${{ matrix.azcli_version }}"
+  mainjob2:
+    needs: mainjob1
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Access Variable
+        run: |
+          echo "var1=${{ needs.mainjob1.outputs.var1 }}"
