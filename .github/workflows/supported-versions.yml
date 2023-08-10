@@ -5,11 +5,11 @@ on:
     outputs:
       get_versions:
         description: "Matrix of supported versions"
-        value: ${{ jobs.load_supported_versions.outputs.versions }}
+        value: ${{ jobs.load_versions.outputs.versions }}
   workflow_dispatch:
 
 jobs:
-  load_supported_versions:
+  load_versions:
     runs-on: ubuntu-20.04
 
     outputs:
@@ -19,7 +19,7 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
 
-      - name: Save supported versions as output
+      - name: Get supported versions
         id: set-matrix
         run: |
           SUPPORTED_VERSIONS=$(cat ./supported_versions.json)
@@ -29,5 +29,5 @@ jobs:
           echo "::set-output name=matrix::${SUPPORTED_VERSIONS}"
 
       - name: Display supported versions
-        id: get-versions
-        run: echo fromJSON(steps.set-matrix.outputs.matrix)
+        id: show-versions
+        run: echo $steps.set-matrix.outputs.matrix
