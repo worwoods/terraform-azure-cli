@@ -55,6 +55,10 @@ jobs:
         run: |
           echo "az_versions=$(jq -r -c '.azcli_version | sort | reverse' supported_versions.json)" >> $GITHUB_ENV
           echo "tf_versions=$(jq -r -c '.tf_version | sort | reverse' supported_versions.json)" >> $GITHUB_ENV
+      - name: output
+        run: |
+          echo $az_versions
+          echo $tf_versions
 
   mainjob2:
     needs: load_versions
