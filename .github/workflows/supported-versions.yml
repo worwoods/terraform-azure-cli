@@ -27,7 +27,6 @@ jobs:
           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\r'/%0D}"
           echo "::set-output name=matrix::${SUPPORTED_VERSIONS}"
 
-      - name: Retrieve supported versions
+      - name: Display supported versions
         id: get-versions
-        run: |
-          echo ${{ steps.set-matrix.outputs.matrix }}
+        run: echo ${{ steps.set-matrix.outputs.matrix }}
