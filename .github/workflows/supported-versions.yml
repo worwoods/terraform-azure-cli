@@ -1,0 +1,34 @@
+name: Load Supported Versions
+
+on:
+  workflow_call:
+    outputs:
+      get_versions:
+        description: "Matrix of supported versions"
+        value: ${{ jobs.get.outputs.versions }}
+
+jobs:
+  get:
+    runs-on: ubuntu-20.04
+
+    outputs:
+      versions: ${{ steps.set-matrix.outputs.matrix }}
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - name: Save supported versions as output
+        id: set-matrix
+        run: |
+          SUPPORTED_VERSIONS=$(cat ./supported_versions.json)
+          SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//'%'/%25}"
+          SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\n'/%0A}"
+          SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\r'/%0D}"
+          echo "{matrix}=${SUPPORTED_VERSIONS}" >> $GITHUB_OUTPUT
+
+      - name: Display Versions
+        id: show
+        run: |
+          echo ${{ steps.set-matrix.outputs.matrix }}
+          echo ${{ env.matrix }}
