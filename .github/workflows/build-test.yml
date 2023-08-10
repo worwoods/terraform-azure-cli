@@ -35,13 +35,9 @@ jobs:
         id: set-matrix
         run: |
           SUPPORTED_VERSIONS=$(cat ./supported_versions.json)
-          echo $SUPPORTED_VERSIONS
           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//'%'/%25}"
-          echo $SUPPORTED_VERSIONS
           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\n'/%0A}"
-          echo $SUPPORTED_VERSIONS
           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\r'/%0D}"
-          echo $SUPPORTED_VERSIONS
           echo "::set-output name=matrix::${SUPPORTED_VERSIONS}"
 
   load_azcli_versions:
@@ -56,9 +52,13 @@ jobs:
         id: set-matrix
         run: |
           SUPPORTED_VERSIONS=$(jq -r '.azcli_version | sort' supported_versions.json)"
+          echo $SUPPORTED_VERSIONS
           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//'%'/%25}"
+          echo $SUPPORTED_VERSIONS
           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\n'/%0A}"
+          echo $SUPPORTED_VERSIONS
           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\r'/%0D}"
+          echo $SUPPORTED_VERSIONS
           echo "::set-output name=matrix::${SUPPORTED_VERSIONS}"
 
   load_tf_versions:
