@@ -8,11 +8,12 @@ jobs:
   test-harness:
     runs-on: ubuntu-20.04
     needs: load_supported_versions
+    strategy:
+      matrix: ${{ fromJSON(needs.load_supported_versions.outputs.matrix) }}
+      
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
 
       - name: Display matrix
-        run: |
-          echo ${{ needs.load_supported_versions.outputs.get_versions }}
-          echo ${{ job.load_supported_versions.outputs.get_versions }}
+        run: echo "IMAGE_TAG=${BRANCH}_terraform-${{ matrix.tf_version }}_azcli-${{ matrix.azcli_version }}"
