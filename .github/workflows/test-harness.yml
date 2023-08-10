@@ -1,21 +1,18 @@
 name: test-harness
-
 on:
   push:
 
 jobs:
   load_supported_versions:
     uses: ./.github/workflows/supported-versions.yml
-
-  build:
+  test-harness:
     runs-on: ubuntu-20.04
     needs: load_supported_versions
-
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
 
-      - name: Save branch name as env var
+      - name: Display matrix
         run: |
           echo ${{ needs.load_supported_versions.outputs.get_versions }}
           echo ${{ job.load_supported_versions.outputs.get_versions }}
