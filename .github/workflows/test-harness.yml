@@ -4,12 +4,12 @@ on:
   push:
 
 jobs:
-  load_versions:
+  load_supported_versions:
     uses: ./.github/workflows/supported-versions.yml
 
   build:
     runs-on: ubuntu-20.04
-    needs: load_versions
+    needs: load_supported_versions
 
     steps:
       - name: Check out the repo
@@ -17,5 +17,5 @@ jobs:
 
       - name: Save branch name as env var
         run: |
-          echo ${{ needs.load_versions.outputs.get_versions }}
-          echo ${{ job.load_versions.outputs.get_versions }}
+          echo ${{ needs.load_supported_versions.outputs.get_versions }}
+          echo ${{ job.load_supported_versions.outputs.get_versions }}
