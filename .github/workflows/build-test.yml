@@ -40,10 +40,12 @@ jobs:
           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\r'/%0D}"
           echo "::set-output name=matrix::${SUPPORTED_VERSIONS}"
 
-  load_azcli_versions:
+  load_versions:
     runs-on: ubuntu-20.04
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      az_versions: ${{ steps.set-matrix.outputs.az_versions }}
+      tf_versions: ${{ steps.set-matrix.outputs.tf_versions }}
+      
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -51,10 +53,18 @@ jobs:
       - name: Save supported versions as output
         id: set-matrix
         run: |
-          SUPPORTED_VERSIONS=$(jq -r -c '.azcli_version | sort | reverse' supported_versions.json)"
-          echo $SUPPORTED_VERSIONS
-          echo "::set-output name=matrix::${SUPPORTED_VERSIONS}"
+          echo "az_versions=$(jq -r -c '.azcli_version | sort | reverse' supported_versions.json)" >> $GITHUB_ENV
+          echo "tf_versions=$(jq -r -c '.tf_version | sort | reverse' supported_versions.json)" >> $GITHUB_ENV
 
+  mainjob2:
+    needs: load_versions
+    runs-on: ubuntu-latest
+    steps:
+        - name: Access Variable
+          run: |
+            echo "az_versions=${{ needs.load_versions.outputs.az_versions }}"
+            echo "tf_versions=${{ needs.load_versions.outputs.tf_versions }}"
+            
   load_tf_versions:
     runs-on: ubuntu-20.04
     outputs:
