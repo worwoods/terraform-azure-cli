@@ -18,7 +18,6 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-20.04
-
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3

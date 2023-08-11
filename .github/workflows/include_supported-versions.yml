@@ -28,8 +28,8 @@ jobs:
         run: echo $matrix
 
   display_versions:
+    runs-on: ubuntu-20.04
     needs: load_versions
-    runs-on: ubuntu-latest
     steps:
         - name: Access Variable
           run: echo "matrix=${{ needs.load_versions.outputs.matrix }}"
