@@ -10,17 +10,7 @@
     "v1.4.5",
     "v1.4.4",
     "v1.4.3",
-    "v1.4.2",
-    "v1.4.1",
-    "v1.4.0",
-    "v1.3.9",
-    "v1.3.8",
-    "v1.3.7",
-    "v1.3.6",
-    "v1.3.5",
-    "v1.3.4",
-    "v1.3.3",
-    "v1.3.2"
+    "v1.4.2"
   ],
   "azcli_version": [
     "azure-cli-2.51.0",
@@ -33,16 +23,6 @@
     "azure-cli-2.45.0",
     "azure-cli-2.44.1",
     "azure-cli-2.44.0",
-    "azure-cli-2.43.0",
-    "azure-cli-2.42.0",
-    "azure-cli-2.41.0",
-    "azure-cli-2.40.0",
-    "azure-cli-2.39.0",
-    "azure-cli-2.38.0",
-    "azure-cli-2.37.0",
-    "azure-cli-2.36.0",
-    "azure-cli-2.35.0",
-    "azure-cli-2.34.1",
-    "azure-cli-2.34.0"
+    "azure-cli-2.43.0"
   ]
 }
