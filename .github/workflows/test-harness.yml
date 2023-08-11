@@ -12,7 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: load_versions
     strategy:
-      matrix: ${{ fromJSON(needs.load_versions.outputs.matrix) }}
+      matrix:
+        tf_version: ${{ fromJSON(needs.load_versions.outputs.tf_version) }}
+        azcli_version: ${{ fromJSON(needs.load_versions.outputs.azcli_version) }}
     steps:
       - name: Test access to values
         run: |
