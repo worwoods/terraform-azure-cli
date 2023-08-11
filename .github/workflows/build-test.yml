@@ -53,6 +53,9 @@ jobs:
         with:
           name: ${{ env.IMAGE_NAME }}_${{ env.IMAGE_TAG }}
           path: ${{ env.IMAGE_NAME }}_${{ env.IMAGE_TAG }}.tar
+    outputs:
+      artifact_name: ${{ env.IMAGE_NAME }}_${{ env.IMAGE_TAG }}
+
 
   test_container:
     runs-on: ubuntu-20.04
@@ -66,19 +69,18 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v3
 
-      - name: Save branch name as env var
-        run: echo "BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
-
-      - name: Build and save image tag
-        run: echo "IMAGE_TAG=${BRANCH}_tf-${{ matrix.tf_version }}_az-${{ matrix.azcli_version }}" >> $GITHUB_ENV
+      - name: Retrieve Artifact name
+        run: |
+          echo "ARTIFACT_NAME=${{ needs.build_containers.outputs.artifact_name }}" >> $GITHUB_ENV
+          echo "IMAGE_NAME=$(echo ${{ needs.build_containers.outputs.artifact_name }} | awk -F_ {'print $1":"$2'})" >> $GITHUB_ENV
 
       - name: Download image artifact
         uses: actions/download-artifact@v3
         with:
-          name: ${{ env.IMAGE_NAME }}_${{ env.IMAGE_TAG }}
+          name: ${ ARTIFACT_NAME }
 
       - name: Load image
-        run: docker image load --input ${{ env.IMAGE_NAME }}_${{ env.IMAGE_TAG }}.tar
+        run: docker image load --input ${{ env.ARTIFACT_NAME }}.tar
 
       - name: Generate test config
         run: |
@@ -89,10 +91,19 @@ jobs:
       - name: run structure tests
         uses: plexsystems/container-structure-test-action@v0.3.0
         with:
-          image: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+          image: ${{ env.IMAGE_NAME }}
           config: tests/container-structure-tests.yml
 
+  delete_artifacts:
+    runs-on: ubuntu-20.04
+    needs:
+      - load_versions
+      - build_containers
+      - test_container
+    strategy:
+      matrix: ${{ fromJSON(needs.load_versions.outputs.matrix) }}
+    steps:
       - name: Delete Artifact
         uses: GeekyEggo/delete-artifact@v2.0.0
         with:
-          name: ${{ env.IMAGE_NAME }}_${{ env.IMAGE_TAG }}
+          name: ${{ needs.build_containers.outputs.artifact_name }}
