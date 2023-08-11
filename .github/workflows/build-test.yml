@@ -43,8 +43,8 @@ jobs:
   load_versions:
     runs-on: ubuntu-20.04
     outputs:
-      az_versions: ${{ env.az_versions }}
-      tf_versions: ${{ env.tf_versions }}
+      azcli_version: ${{ env.azcli_version }}
+      tf_version: ${{ env.tf_version }}
       matrix: ${{ env.matrix }}
       
     steps:
@@ -54,9 +54,9 @@ jobs:
       - name: Save supported versions as output
         id: set-matrix
         run: |
-          echo "az_versions=$(jq -r -c '.azcli_version | sort | reverse' supported_versions.json)" >> $GITHUB_ENV
+          echo "azcli_version=$(jq -r -c '.azcli_version | sort | reverse' supported_versions.json)" >> $GITHUB_ENV
           echo "tf_versions=$(jq -r -c '.tf_version | sort | reverse' supported_versions.json)" >> $GITHUB_ENV
-          echo -e matrix=\{"tf_versions": $(jq -r -c '.azcli_version | sort | reverse' supported_versions.json), "az_versions": $(jq -r -c '.tf_version | sort | reverse' supported_versions.json)\} >> $GITHUB_ENV
+          echo -e matrix=\{"tf_version": $(jq -r -c '.azcli_version | sort | reverse' supported_versions.json), "azcli_version": $(jq -r -c '.tf_version | sort | reverse' supported_versions.json)\} >> $GITHUB_ENV
           
       - name: output
         run: |
@@ -88,7 +88,9 @@ jobs:
         run: echo "BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
       - name: Build and save image tag
-        run: echo "IMAGE_TAG=${BRANCH}_terraform-${{ matrix.tf_version }}_azcli-${{ matrix.azcli_version }}" >> $GITHUB_ENV
+        run: |
+            echo "IMAGE_TAG=${BRANCH}_terraform-${{ matrix.tf_version }}_azcli-${{ matrix.azcli_version }}" >> $GITHUB_ENV
+            echo $IMAGE_TAG
 
       - name: Build image
         run: docker image build . --file Dockerfile --build-arg TERRAFORM_VERSION=${{ matrix.tf_version }} --build-arg AZURE_CLI_VERSION=${{ matrix.azcli_version }} --tag ${IMAGE_NAME}:${IMAGE_TAG}
