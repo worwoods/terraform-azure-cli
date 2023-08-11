@@ -1,0 +1,15 @@
+name: Delete Artifacts
+on:
+  workflow_call:
+    inputs:
+      artifact_name:
+
+jobs:
+  delete_artifacts:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Delete Artifact
+        uses: GeekyEggo/delete-artifact@v2.0.0
+        with:
+          name: ${{ needs.build_containers.outputs.artifact_name }}
+
