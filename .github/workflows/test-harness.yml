@@ -3,10 +3,10 @@ on:
   push:
 jobs:
   load_versions:
-    uses: ./.github/workflows/include/supported-versions.yml
+    uses: ./.github/workflows/include_supported-versions.yml
 
   latest_version:
-    uses: ./.github/workflows/include/latest-version.yml
+    uses: ./.github/workflows/include_latest-version.yml
 
   check_values:
     runs-on: ubuntu-latest

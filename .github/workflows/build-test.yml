@@ -24,7 +24,7 @@ env:
 
 jobs:
   load_versions:
-    uses: ./.github/workflows/include/supported-versions.yml
+    uses: ./.github/workflows/include_supported-versions.yml
 
   build_containers:
     runs-on: ubuntu-20.04
