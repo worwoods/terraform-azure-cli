@@ -78,7 +78,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs: load_versions
     strategy:
-      matrix: ${{ fromJSON(needs.load_supported_versions.outputs.matrix) }}
+      matrix: ${{ fromJSON(needs.load_versions.outputs.matrix) }}
 
     steps:
       - name: Check out the repo
