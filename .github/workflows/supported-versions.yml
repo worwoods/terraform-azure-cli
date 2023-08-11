@@ -3,7 +3,7 @@ name: Load Supported Versions
 on:
   workflow_call:
     outputs:
-      get_versions:
+      matrix:
         description: "Matrix of supported versions"
         value: ${{ jobs.load_versions.outputs.matrix }}
       azcli_version:
