@@ -8,8 +8,8 @@ jobs:
   mainjob2:
     runs-on: ubuntu-latest
     needs: load_versions
-    # strategy:
-    #   matrix: ${{ fromJSON(needs.load_versions.outputs.matrix) }}
+    strategy:
+      matrix: ${{ fromJSON(needs.load_versions.outputs.matrix) }}
 
     steps:
       - name: Access Variable
