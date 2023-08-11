@@ -1,25 +1,16 @@
-name: Main Workflow
-
+name: test_supported-versions.yaml
 on:
   push:
-
 jobs:
-  mainjob1:
-    runs-on: ubuntu-latest
-    outputs:
-      var1: ${{ steps.set_var.outputs.var1 }}
-    steps:
-      - name: Set Variable
-        id: set_var
-        run: |
-          echo "var1=good" >> $GITHUB_OUTPUT
+  load_versions:
+    uses: ./.github/workflows/supported-versions.yml
 
   mainjob2:
-    needs: mainjob1
     runs-on: ubuntu-latest
+    needs: load_versions
+    strategy:
+      matrix: ${{ fromJSON(needs.load_versions.outputs.matrix) }}
 
     steps:
-
       - name: Access Variable
-        run: |
-          echo "var1=${{ needs.mainjob1.outputs.var1 }}"
+        run: echo tf_${{ matrix.tf_version }}_azcli-${{ matrix.azcli_version }}
