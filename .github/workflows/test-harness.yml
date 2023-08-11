@@ -17,7 +17,7 @@ jobs:
       - name: Test access to values
         run: |
           echo ${{ needs.load_versions.outputs.matrix }}
-          echo tf_${{ matrix.tf_version }}_azcli-${{ matrix.azcli_version }}
+          echo tf_${{ matrix.tf_version }}_az-${{ matrix.azcli_version }}
 
   check_latest:
     runs-on: ubuntu-latest
