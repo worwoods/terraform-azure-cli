@@ -23,23 +23,6 @@ env:
   IMAGE_NAME: "terraform-azure-cli"
 
 jobs:
-#   load_supported_versions:
-#     runs-on: ubuntu-20.04
-#     outputs:
-#       matrix: ${{ steps.set-matrix.outputs.matrix }}
-#     steps:
-#       - name: Check out the repo
-#         uses: actions/checkout@v3
-
-#       - name: Save supported versions as output
-#         id: set-matrix
-#         run: |
-#           SUPPORTED_VERSIONS=$(cat ./supported_versions.json)
-#           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//'%'/%25}"
-#           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\n'/%0A}"
-#           SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\r'/%0D}"
-#           echo "::set-output name=matrix::${SUPPORTED_VERSIONS}"
-
   load_versions:
     runs-on: ubuntu-20.04
     outputs:
@@ -55,13 +38,13 @@ jobs:
         id: set-matrix
         run: |
           echo "azcli_version=$(jq -r -c '.azcli_version | sort | reverse' supported_versions.json)" >> $GITHUB_ENV
-          echo "tf_versions=$(jq -r -c '.tf_version | sort | reverse' supported_versions.json)" >> $GITHUB_ENV
+          echo "tf_version=$(jq -r -c '.tf_version | sort | reverse' supported_versions.json)" >> $GITHUB_ENV
           echo -e matrix=\{"azcli_version": $(jq -r -c '.azcli_version | sort | reverse' supported_versions.json), "tf_version": $(jq -r -c '.tf_version | sort | reverse' supported_versions.json)\} >> $GITHUB_ENV
           
       - name: output
         run: |
-          echo $az_versions
-          echo $tf_versions
+          echo $azcli_version
+          echo $tf_version
           echo $matrix
 
   display_versions:
@@ -70,8 +53,8 @@ jobs:
     steps:
         - name: Access Variable
           run: |
-            echo "az_versions=${{ needs.load_versions.outputs.az_versions }}"
-            echo "tf_versions=${{ needs.load_versions.outputs.tf_versions }}"
+            echo "azcli_version=${{ needs.load_versions.outputs.azcli_version }}"
+            echo "tf_version=${{ needs.load_versions.outputs.tf_version }}"
             echo "matrix=${{ needs.load_versions.outputs.matrix }}"
 
   build_containers:
@@ -110,7 +93,7 @@ jobs:
       - build_containers
       - load_versions
     strategy:
-      matrix: ${{ fromJSON(needs.load_supported_versions.outputs.matrix) }}
+      matrix: ${{ fromJSON(needs.load_versions.outputs.matrix) }}
 
     steps:
       - name: Checkout source
@@ -136,8 +119,8 @@ jobs:
           export AZ_VERSION=${{ matrix.azcli_version }}
           envsubst '${TF_VERSION},${AZ_VERSION}' < tests/container-structure-tests.yml.template > tests/container-structure-tests.yml
 
-#       - name: run structure tests
-#         uses: plexsystems/container-structure-test-action@v0.3.0
-#         with:
-#           image: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-#           config: tests/container-structure-tests.yml
+      - name: run structure tests
+        uses: plexsystems/container-structure-test-action@v0.3.0
+        with:
+          image: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+          config: tests/container-structure-tests.yml
