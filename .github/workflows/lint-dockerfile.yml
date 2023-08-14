@@ -1,7 +1,7 @@
 name: lint-dockerfile
 
 # trigger on any push
-# but not on master or tags
+# but not on tags
 # and only for Dockerfile related modifications
 on:
   push:
@@ -9,7 +9,6 @@ on:
       - "**"
     branches:
       - "**"
-      - "!master"
     paths:
       - "Dockerfile"
       - "hadolint.yaml"
