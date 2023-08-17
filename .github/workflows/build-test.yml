@@ -56,5 +56,19 @@ jobs:
       - name: run structure tests
         uses: plexsystems/container-structure-test-action@v0.3.0
         with:
-          image: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+          image: ${{ env.IMAGE_NAME }}
           config: tests/container-structure-tests.yml
+
+  delete_artifacts:
+    runs-on: ubuntu-20.04
+    needs:
+      - load_versions
+      - build_containers
+      - test_container
+    strategy:
+      matrix: ${{ fromJSON(needs.build_containers.outputs.artifact_name) }}
+    steps:
+      - name: Delete Artifact
+        uses: GeekyEggo/delete-artifact@v2.0.0
+        with:
+          name: ${{ matrix }}

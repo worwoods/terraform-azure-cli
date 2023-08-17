@@ -28,7 +28,7 @@ jobs:
         run: echo "RELEASE_TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
       - name: Build and save image release tag
-        run: echo "IMAGE_RELEASE_TAG=release-${RELEASE_TAG}_terraform-${{ matrix.tf_version }}_azcli-${{ matrix.azcli_version }}" >> $GITHUB_ENV
+        run: echo "IMAGE_RELEASE_TAG=v${RELEASE_TAG}_tf-${{ matrix.tf_version }}_az-${{ matrix.azcli_version }}" >> $GITHUB_ENV
 
       - name: Build image
         run: docker image build . --file Dockerfile --build-arg TERRAFORM_VERSION=${{ matrix.tf_version }} --build-arg AZURE_CLI_VERSION=${{ matrix.azcli_version }} --tag ${{ secrets.DOCKERHUB_USERNAME }}/${IMAGE_NAME}:${IMAGE_RELEASE_TAG}
