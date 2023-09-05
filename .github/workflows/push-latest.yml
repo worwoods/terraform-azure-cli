@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Build image
         run: docker image build . --file Dockerfile --build-arg TERRAFORM_VERSION=${{ needs.latest_version.outputs.tf_version }} --build-arg AZURE_CLI_VERSION=${{ needs.latest_version.outputs.azcli_version }} --tag ${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME:$IMAGE_TAG
